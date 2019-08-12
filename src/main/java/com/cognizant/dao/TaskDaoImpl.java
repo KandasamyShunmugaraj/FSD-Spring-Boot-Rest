@@ -23,19 +23,20 @@ public class TaskDaoImpl implements TaskDao {
 		this.taskSessionFactory = sessionFactory;
 	}
 
+	@Override
 	public void addTask(Task task) {
 		taskSessionFactory.getCurrentSession().save(task);
 	}
-
+	@Override
 	public void updateTask(Task task) {
 		taskSessionFactory.getCurrentSession().update(task);
 	}
-
+	@Override
 	public List<Task> listTasks() {
 		Session session = taskSessionFactory.getCurrentSession();
 		return session.createQuery("from Task").list();
 	}
-
+	@Override
 	public Task getTaskById(Long taskId) {
 		Session session = taskSessionFactory.getCurrentSession();
 		Query query = session.createQuery("from Task t where t.taskId = :taskId");
@@ -43,7 +44,7 @@ public class TaskDaoImpl implements TaskDao {
 		List<Task> list = query.list();
 		return list.isEmpty() ? null :list.get(0);
 	}
-
+	@Override
 	public void removeTask(Integer id) {
 		Task task = taskSessionFactory.getCurrentSession().load(Task.class, id);
 		if (null != task) {
@@ -53,7 +54,7 @@ public class TaskDaoImpl implements TaskDao {
 		}
 
 	}
-
+	@Override
 	public Task getTaskByName(String taskName) {
 		Session session = taskSessionFactory.getCurrentSession();
 		Query query = session.createQuery("from Task t where t.task = :taskName");

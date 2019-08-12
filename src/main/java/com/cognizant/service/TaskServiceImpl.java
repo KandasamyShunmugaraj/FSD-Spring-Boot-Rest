@@ -1,5 +1,6 @@
 package com.cognizant.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,39 +37,44 @@ public class TaskServiceImpl  implements TaskService{
 
 	@Override
 	@Transactional
-	public Task getTaskById(Long taskId) {
+	public TaskDto getTaskById(Long taskId) {
 		Task task = taskDao.getTaskById(taskId);
+		TaskDto taskDto = populateFromEntity(task);
 		if(task.getParentTask()!=null) {
 			Task parentTask = taskDao.getTaskById(Long.parseLong(task.getParentTask()));
-			task.setParentTaskName(parentTask.getTaskName());
+			taskDto.setParentTaskName(parentTask.getTaskName());
 		}
-		 return task;
+		 return taskDto;
 	}
 
 	@Override
 	@Transactional
-	public List<Task> listTasks() {
+	public List<TaskDto> listTasks() {
+		List<TaskDto> taskDtoList = new ArrayList<>();
 		List<Task> taskList = taskDao.listTasks();
+		
 
 		for (Task task : taskList) {
+			TaskDto taskDto = populateFromEntity(task);
 			if(task.getParentTask()!=null) {
 			Task taskReturned = taskDao.getTaskById(Long.parseLong(task.getParentTask()));
-			task.setParentTaskName(taskReturned.getTaskName());
+			taskDto.setParentTaskName(taskReturned.getTaskName());
 			}
+			taskDtoList.add(taskDto);
 		}
 		
-		return taskList;
+		return taskDtoList;
 	}
 
 	
 	@Override
 	@Transactional
-	public Task getTaskByName(String taskName) {
-		return taskDao.getTaskByName(taskName);
+	public TaskDto getTaskByName(String taskName) {
+		return populateFromEntity(taskDao.getTaskByName(taskName));
 		
 	}
 	
-	private void populateFromDTO(TaskDto taskdto,Task task) {
+	private static void populateFromDTO(TaskDto taskdto,Task task) {
 		
 		task.setTaskId(taskdto.getTaskId());
 		task.setTaskName(taskdto.getTaskName());
@@ -77,7 +83,19 @@ public class TaskServiceImpl  implements TaskService{
 		task.setEndDate(taskdto.getEndDate());
 		task.setEndTask(taskdto.isEndTask());
 		task.setParentTask(taskdto.getParentTask());
-		task.setParentTaskName(taskdto.getParentTaskName());
+	}
+	
+   private static TaskDto populateFromEntity(Task task) {
+	   TaskDto taskdto = new TaskDto();
+		
+	   taskdto.setTaskId(task.getTaskId());
+	   taskdto.setTaskName(task.getTaskName());
+	   taskdto.setPriority(task.getPriority());
+	   taskdto.setStartDate(task.getStartDate());
+	   taskdto.setEndDate(task.getEndDate());
+	   taskdto.setEndTask(task.isEndTask());
+	   taskdto.setParentTask(task.getParentTask());
+	   return taskdto;
 	}
 
 }

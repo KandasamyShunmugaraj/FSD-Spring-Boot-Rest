@@ -10,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Any;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.cognizant.dao.TaskDaoImpl;
@@ -53,7 +52,7 @@ public class TaskServiceImplTest {
 		parentTask.setTaskName("parentTask");
 		Mockito.when(taskDaoImpl.getTaskById(1L)).thenReturn(task);	
 		Mockito.when(taskDaoImpl.getTaskById(2L)).thenReturn(parentTask);	
-		Task taskreturn = taskServiceImpl.getTaskById(1L);
+		TaskDto taskreturn = taskServiceImpl.getTaskById(1L);
 		assertEquals("taskName",taskreturn.getTaskName());	
 		assertEquals("parentTask",parentTask.getTaskName());	
 	}
@@ -64,7 +63,7 @@ public class TaskServiceImplTest {
 		task.setTaskName("taskName");
 		task.setParentTask(null);
 		Mockito.when(taskDaoImpl.getTaskById(1L)).thenReturn(task);		
-		Task taskreturn = taskServiceImpl.getTaskById(1L);
+		TaskDto taskreturn = taskServiceImpl.getTaskById(1L);
 		assertEquals("taskName",taskreturn.getTaskName());	
 		
 	}
@@ -83,7 +82,7 @@ public class TaskServiceImplTest {
 		Mockito.when(taskDaoImpl.listTasks()).thenReturn(listTask);	
 		Mockito.when(taskDaoImpl.getTaskById(2L)).thenReturn(parentTask);	
 		Mockito.when(taskDaoImpl.getTaskById(3L)).thenReturn(parentTask);
-		List<Task> listTaskreturn = taskServiceImpl.listTasks();
+		List<TaskDto> listTaskreturn = taskServiceImpl.listTasks();
 		assertEquals(2,listTaskreturn.size());	
 	}
 	
@@ -92,7 +91,7 @@ public class TaskServiceImplTest {
 		Task task = new Task();
 		task.setTaskName("taskName");
 		Mockito.when(taskDaoImpl.getTaskByName("taskName")).thenReturn(task);	
-		Task taskreturn = taskServiceImpl.getTaskByName("taskName");
+		TaskDto taskreturn = taskServiceImpl.getTaskByName("taskName");
 		assertEquals("taskName",taskreturn.getTaskName());	
 	}
 	
