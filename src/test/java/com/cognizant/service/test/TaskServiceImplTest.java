@@ -13,7 +13,6 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.cognizant.dao.TaskDaoImpl;
-import com.cognizant.dto.TaskDto;
 import com.cognizant.entity.Task;
 import com.cognizant.service.TaskServiceImpl;
 
@@ -29,7 +28,7 @@ public class TaskServiceImplTest {
 
 	@Test
 	public void saveTask() {
-		TaskDto task = new TaskDto();
+		Task task = new Task();
 		taskServiceImpl.addTask(task);
 		Mockito.verify(taskDaoImpl).addTask(Mockito.any(Task.class));
 	}
@@ -52,7 +51,7 @@ public class TaskServiceImplTest {
 		parentTask.setTaskName("parentTask");
 		Mockito.when(taskDaoImpl.getTaskById(1L)).thenReturn(task);	
 		Mockito.when(taskDaoImpl.getTaskById(2L)).thenReturn(parentTask);	
-		TaskDto taskreturn = taskServiceImpl.getTaskById(1L);
+		Task taskreturn = taskServiceImpl.getTaskById(1L);
 		assertEquals("taskName",taskreturn.getTaskName());	
 		assertEquals("parentTask",parentTask.getTaskName());	
 	}
@@ -63,7 +62,7 @@ public class TaskServiceImplTest {
 		task.setTaskName("taskName");
 		task.setParentTask(null);
 		Mockito.when(taskDaoImpl.getTaskById(1L)).thenReturn(task);		
-		TaskDto taskreturn = taskServiceImpl.getTaskById(1L);
+		Task taskreturn = taskServiceImpl.getTaskById(1L);
 		assertEquals("taskName",taskreturn.getTaskName());	
 		
 	}
@@ -82,7 +81,7 @@ public class TaskServiceImplTest {
 		Mockito.when(taskDaoImpl.listTasks()).thenReturn(listTask);	
 		Mockito.when(taskDaoImpl.getTaskById(2L)).thenReturn(parentTask);	
 		Mockito.when(taskDaoImpl.getTaskById(3L)).thenReturn(parentTask);
-		List<TaskDto> listTaskreturn = taskServiceImpl.listTasks();
+		List<Task> listTaskreturn = taskServiceImpl.listTasks();
 		assertEquals(2,listTaskreturn.size());	
 	}
 	
@@ -91,7 +90,7 @@ public class TaskServiceImplTest {
 		Task task = new Task();
 		task.setTaskName("taskName");
 		Mockito.when(taskDaoImpl.getTaskByName("taskName")).thenReturn(task);	
-		TaskDto taskreturn = taskServiceImpl.getTaskByName("taskName");
+		Task taskreturn = taskServiceImpl.getTaskByName("taskName");
 		assertEquals("taskName",taskreturn.getTaskName());	
 	}
 	

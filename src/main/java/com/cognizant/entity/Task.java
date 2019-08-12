@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 
@@ -43,7 +44,19 @@ public class Task implements Serializable {
 	@Column(name = "end_task")
 	private boolean endTask;
 	
-	public boolean isEndTask() {
+	@Transient
+	private String parentTaskName;
+	
+	
+	public String getParentTaskName() {
+        return parentTaskName;
+    }
+
+    public void setParentTaskName(String parentTaskName) {
+        this.parentTaskName = parentTaskName;
+    }
+
+    public boolean isEndTask() {
 		return endTask;
 	}
 
